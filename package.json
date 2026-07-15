@@ -10,7 +10,6 @@
     "dev": "wix dev",
     "build": "wix build",
     "preview": "wix preview",
-    "configurar": "node scripts/configurar-wix-github.mjs",
     "astro": "astro",
     "wix": "wix",
     "release": "wix release",
