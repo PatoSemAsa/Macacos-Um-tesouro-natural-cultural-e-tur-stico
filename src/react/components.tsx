@@ -139,13 +139,72 @@ export function DetailHero({ item, kicker, children }: { item: Experience; kicke
         <h1>{item.title}</h1>
         <p>{item.description}</p>
         <div className="detail-actions">
-          <a className="button primary" href={item.form} target="_blank" rel="noreferrer">Inscreva-se agora <span>↗</span></a>
-          <a className="button ghost" href={item.regulation} target="_blank" rel="noreferrer">Ler regulamento</a>
+          {item.form && <a className="button primary" href={item.form} target="_blank" rel="noreferrer">Inscreva-se agora <span>↗</span></a>}
+          {item.regulation && <a className="button ghost" href={item.regulation} target="_blank" rel="noreferrer">Ler regulamento</a>}
         </div>
         {children}
       </div>
       <div className="detail-stats"><span><small>Período</small>{item.period}</span><span><small>Prazo</small>{item.deadline}</span></div>
     </section>
+  );
+}
+
+export function EventEditorial({ item }: { item: Experience }) {
+  return (
+    <>
+      <DetailHero item={item} kicker={item.kicker}>
+        {!!item.badges.length && <div className="mini-badges">{item.badges.map((badge) => <span key={badge}>{badge}</span>)}</div>}
+      </DetailHero>
+
+      <section className="section event-overview">
+        <div className="section-heading split">
+          <div><span className="eyebrow">{item.overviewEyebrow}</span><h2>{item.overviewTitle}</h2></div>
+          <p>{item.overviewText}</p>
+        </div>
+        <div className="editorial-copy">
+          <div>{item.bodyParagraphs.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}</div>
+          {!!item.facts.length && <ul className="editable-facts">{item.facts.map((fact) => <li key={fact}><i>✓</i><span>{fact}</span></li>)}</ul>}
+        </div>
+      </section>
+
+      {item.posterImage && <section className="official-poster-section" style={{ "--accent": item.accent } as React.CSSProperties}>
+        <div className="official-poster-copy">
+          <span className="eyebrow">Material oficial</span>
+          <h2>As informações principais<br />em um só lugar.</h2>
+          <p>Este é o cartaz divulgado no projeto original. Você pode substituí-lo a qualquer momento pelo painel de conteúdo.</p>
+          <div className="official-poster-actions">
+            {item.form && <a className="button blue" href={item.form} target="_blank" rel="noreferrer">Fazer inscrição ↗</a>}
+            {item.regulation && <a className="text-link" href={item.regulation} target="_blank" rel="noreferrer">Abrir regulamento ↗</a>}
+          </div>
+        </div>
+        <figure><img src={item.posterImage} alt={`Cartaz oficial — ${item.title}`} loading="lazy" /></figure>
+      </section>}
+
+      {!!item.featureCards.length && <section className="section event-features">
+        <div className={`editorial-card-grid cards-${Math.min(item.featureCards.length, 4)}`}>
+          {item.featureCards.map((card) => <article key={`${card.label}-${card.title}`}>
+            <b>{card.value}</b><span>{card.label}</span><h3>{card.title}</h3><p>{card.text}</p>
+          </article>)}
+        </div>
+      </section>}
+
+      {!!item.schedule.length && <section className="event-schedule-section" style={{ "--accent": item.accent } as React.CSSProperties}>
+        <div><span className="eyebrow light">Agenda completa</span><h2>Do primeiro prazo<br />ao encontro final.</h2></div>
+        <div className="event-schedule-list">{item.schedule.map((entry) => <article key={`${entry.date}-${entry.title}`}>
+          <time>{entry.date}</time><div><small>{entry.time} • {entry.place}</small><h3>{entry.title}</h3><p>{entry.description}</p></div>
+        </article>)}</div>
+      </section>}
+
+      {!!item.prizes.length && <section className="awards-section">
+        <div><span className="eyebrow light">Premiações</span><h2>Reconhecimento<br />para os destaques.</h2></div>
+        <div className="awards-list">{item.prizes.map((prize) => <span key={`${prize.place}-${prize.reward}`}><b>{prize.place}</b>{prize.reward}</span>)}</div>
+      </section>}
+
+      {!!item.extraLinks.length && <section className="section event-extra-links">
+        <span className="eyebrow">Links úteis</span>
+        <div>{item.extraLinks.map((link) => <a className="button blue" href={link.url} target="_blank" rel="noreferrer" key={link.url}>{link.label} ↗</a>)}</div>
+      </section>}
+    </>
   );
 }
 

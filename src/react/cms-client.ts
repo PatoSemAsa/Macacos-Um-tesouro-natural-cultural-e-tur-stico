@@ -2,8 +2,10 @@
 
 import { items } from "@wix/data";
 import { useEffect, useState } from "react";
+import { loadSanityContent } from "./sanity-content";
 import {
   agendaDays,
+  aboutContent,
   defaultSiteContent,
   diaryChapters,
   experiences,
@@ -97,6 +99,7 @@ function mapExperiences(rows: CmsRow[]): Experience[] {
       const fallback = experiences.find((item) => item.slug === slug) ?? experiences[index % experiences.length];
       const kind = row.kind === "natureza" || row.kind === "arte" || row.kind === "cultura" ? row.kind : fallback.kind;
       return {
+        ...fallback,
         slug: slug || fallback.slug,
         title: text(row.title, fallback.title),
         shortTitle: text(row.shortTitle, fallback.shortTitle),
@@ -132,6 +135,7 @@ function mapAgenda(rows: CmsRow[]): AgendaDay[] {
       const id = text(row.idSlug);
       const fallback = agendaDays.find((day) => day.id === id) ?? agendaDays[index % agendaDays.length];
       return {
+        ...fallback,
         id: id || fallback.id,
         date: text(row.dateLabel, fallback.date),
         label: text(row.category, fallback.label),
@@ -155,6 +159,7 @@ function mapDiary(rows: CmsRow[]): DiaryChapter[] {
       const chapterNumber = text(row.number);
       const fallback = diaryChapters.find((chapter) => chapter.n === chapterNumber) ?? diaryChapters[index % diaryChapters.length];
       return {
+        ...fallback,
         n: chapterNumber || fallback.n,
         tag: text(row.tag, fallback.tag),
         title: text(row.title, fallback.title),
@@ -170,19 +175,25 @@ function mapDiary(rows: CmsRow[]): DiaryChapter[] {
 
 let cachedRequest: Promise<SiteContent> | undefined;
 
+async function loadWixContent(): Promise<SiteContent> {
+  const [settingsRows, experienceRows, agendaRows, diaryRows] = await Promise.all([
+    queryCollection(collectionIds.settings, "_createdDate"),
+    queryCollection(collectionIds.experiences),
+    queryCollection(collectionIds.agenda),
+    queryCollection(collectionIds.diary),
+  ]);
+  return {
+    settings: mapSettings(settingsRows),
+    about: aboutContent,
+    experiences: mapExperiences(experienceRows),
+    agenda: mapAgenda(agendaRows),
+    diary: mapDiary(diaryRows),
+  };
+}
+
 export function loadSiteContent() {
   if (!cachedRequest) {
-    cachedRequest = Promise.all([
-      queryCollection(collectionIds.settings, "_createdDate"),
-      queryCollection(collectionIds.experiences),
-      queryCollection(collectionIds.agenda),
-      queryCollection(collectionIds.diary),
-    ]).then(([settingsRows, experienceRows, agendaRows, diaryRows]) => ({
-      settings: mapSettings(settingsRows),
-      experiences: mapExperiences(experienceRows),
-      agenda: mapAgenda(agendaRows),
-      diary: mapDiary(diaryRows),
-    }));
+    cachedRequest = loadSanityContent().then((content) => content ?? loadWixContent()).catch(() => defaultSiteContent);
   }
   return cachedRequest;
 }
