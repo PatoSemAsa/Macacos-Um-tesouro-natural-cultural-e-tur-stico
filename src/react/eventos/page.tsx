@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { ExperienceCard, SiteFooter, SiteHeader } from "../components";
-import { experiences } from "../site-data";
+import { useSiteContent } from "../cms-client";
 
 const filters = [
   { label: "Todos", value: "todos" },
@@ -12,11 +12,12 @@ const filters = [
 ];
 
 export default function EventosPage() {
+  const { settings, experiences, agenda } = useSiteContent();
   const [filter, setFilter] = useState("todos");
   const visible = filter === "todos" ? experiences : experiences.filter((item) => item.kind === filter);
   return (
     <main>
-      <div className="inner-header"><SiteHeader active="/eventos" /></div>
+      <div className="inner-header"><SiteHeader active="/eventos" settings={settings} /></div>
       <section className="page-intro">
         <span className="eyebrow">Agenda 2026</span>
         <div className="page-intro-grid"><h1>Experiências para<br />sentir Macacos.</h1><p>Filtre a programação, compare datas e acesse inscrições e regulamentos sem sair da agenda.</p></div>
@@ -30,17 +31,9 @@ export default function EventosPage() {
       </section>
       <section className="timeline-section">
         <div><span className="eyebrow light">Linha do tempo</span><h2>Agosto e setembro<br />cheios de encontros.</h2></div>
-        <div className="timeline">
-          <div><b>01 AGO</b><span>Abertura + Marumbé</span></div>
-          <div><b>15–16 AGO</b><span>Workshop de fotografia</span></div>
-          <div><b>29 AGO</b><span>Mirante do Eustáquio</span></div>
-          <div><b>12 SET</b><span>Premiação fotografia</span></div>
-          <div><b>19 SET</b><span>Premiação poesia</span></div>
-          <div><b>26–27 SET</b><span>Festival da canção</span></div>
-        </div>
+        <div className="timeline">{agenda.slice(0, 6).map((day) => <div key={day.id}><b>{day.date}</b><span>{day.title}</span></div>)}</div>
       </section>
-      <SiteFooter />
+      <SiteFooter settings={settings} />
     </main>
   );
 }
-

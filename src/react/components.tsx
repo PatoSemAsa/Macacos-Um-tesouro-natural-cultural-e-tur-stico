@@ -2,9 +2,9 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { experiences, navItems, type Experience } from "./site-data";
+import { experiences as defaultExperiences, navItems, siteSettings, type Experience, type SiteSettings } from "./site-data";
 
-export function SiteHeader({ active = "" }: { active?: string }) {
+export function SiteHeader({ active = "", settings = siteSettings }: { active?: string; settings?: SiteSettings }) {
   const [open, setOpen] = useState(false);
   return (
     <header className="site-header">
@@ -18,8 +18,8 @@ export function SiteHeader({ active = "" }: { active?: string }) {
           </Link>
         ))}
       </nav>
-      <a className="instagram-link" href="https://www.instagram.com/curta.macacos/" target="_blank" rel="noreferrer" aria-label="Instagram @curta.macacos">
-        <span>@curta.macacos</span><b>↗</b>
+      <a className="instagram-link" href={settings.instagramUrl} target="_blank" rel="noreferrer" aria-label={`Instagram ${settings.instagramLabel}`}>
+        <span>{settings.instagramLabel}</span><b>↗</b>
       </a>
       <button className="menu-button" aria-label={open ? "Fechar menu" : "Abrir menu"} aria-expanded={open} onClick={() => setOpen(!open)}>
         <span /><span />
@@ -28,13 +28,13 @@ export function SiteHeader({ active = "" }: { active?: string }) {
   );
 }
 
-export function SiteFooter() {
+export function SiteFooter({ settings = siteSettings }: { settings?: SiteSettings }) {
   return (
     <footer className="site-footer">
       <div className="footer-top">
         <div>
           <img className="footer-project-logo" src="/assets/logo-macacos.png" alt="Macacos — Um Tesouro Natural, Cultural e Turístico" />
-          <p>Arte, natureza, cultura e turismo reunidos em experiências que valorizam São Sebastião das Águas Claras.</p>
+          <p>{settings.footerDescription}</p>
         </div>
         <div className="footer-links">
           <strong>Explore</strong>
@@ -42,12 +42,12 @@ export function SiteFooter() {
           <Link href="/agenda">Agenda 2026</Link>
           <Link href="/diario">Diário do projeto</Link>
           <Link href="/sobre">Sobre o projeto</Link>
-          <a href="https://www.instagram.com/curta.macacos/" target="_blank" rel="noreferrer">Instagram</a>
+          <a href={settings.instagramUrl} target="_blank" rel="noreferrer">Instagram</a>
         </div>
         <div className="footer-contact">
           <strong>Informações</strong>
-          <p>São Sebastião das Águas Claras<br />Nova Lima — Minas Gerais</p>
-          <a href="https://www.instagram.com/curta.macacos/" target="_blank" rel="noreferrer">Envie uma mensagem ↗</a>
+          <p>{settings.locationName}<br />{settings.locationRegion}</p>
+          <a href={settings.instagramUrl} target="_blank" rel="noreferrer">Envie uma mensagem ↗</a>
         </div>
       </div>
       <div className="support-row">
@@ -68,8 +68,9 @@ export function SiteFooter() {
   );
 }
 
-export function Countdown() {
-  const target = new Date("2026-08-01T13:00:00-03:00").getTime();
+export function Countdown({ targetDate = siteSettings.countdownDate }: { targetDate?: string }) {
+  const parsedTarget = new Date(targetDate).getTime();
+  const target = Number.isFinite(parsedTarget) ? parsedTarget : new Date(siteSettings.countdownDate).getTime();
   const [time, setTime] = useState({ days: 0, hours: 0, minutes: 0 });
   useEffect(() => {
     const update = () => {
@@ -124,7 +125,7 @@ export function PassportButton({ slug }: { slug: string }) {
   return <button className={saved ? "passport-button saved" : "passport-button"} onClick={toggle} aria-pressed={saved} aria-label={saved ? "Remover do meu roteiro" : "Salvar no meu roteiro"}>{saved ? "✓ Salvo" : "+ Roteiro"}</button>;
 }
 
-export function ExperienceGrid({ limit }: { limit?: number }) {
+export function ExperienceGrid({ limit, experiences = defaultExperiences }: { limit?: number; experiences?: Experience[] }) {
   return <div className="experience-grid">{experiences.slice(0, limit ?? experiences.length).map((item) => <ExperienceCard key={item.slug} item={item} />)}</div>;
 }
 
