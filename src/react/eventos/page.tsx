@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { ExperienceCard, SiteFooter, SiteHeader } from "../components";
 import { useSiteContent } from "../cms-client";
+import type { SiteContent } from "../site-data";
 
 const filters = [
   { label: "Todos", value: "todos" },
@@ -11,8 +12,8 @@ const filters = [
   { label: "Cultura", value: "cultura" },
 ];
 
-export default function EventosPage() {
-  const { settings, experiences, agenda } = useSiteContent();
+export default function EventosPage({ content }: { content?: SiteContent }) {
+  const { settings, experiences, agenda } = useSiteContent(content);
   const [filter, setFilter] = useState("todos");
   const visible = filter === "todos" ? experiences : experiences.filter((item) => item.kind === filter);
   return (

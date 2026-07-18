@@ -1,26 +1,46 @@
-﻿# Macacos — Um Tesouro Natural, Cultural e Turístico
+# Macacos — Um Tesouro Natural, Cultural e Turístico
 
-Site oficial desenvolvido em Astro 5, publicado pelo Wix Headless e preparado para edição diária pelo Sanity Studio.
+Site oficial construído em **Astro + React**, com conteúdo editável no **Sanity Studio** e pronto para publicação automática na **Vercel**.
 
-## Comandos
+O projeto não depende do Wix.
 
-- npm run dev — desenvolvimento local
-- npm run build — validar e compilar
-- npm run preview — criar uma prévia no Wix
-- npm run release — publicar no Wix
-- npm run studio:dev — abrir o painel de conteúdo
-- npm run studio:build — validar o painel
-- npm run studio:deploy — publicar o painel de edição
-- npm run studio:seed — importar o conteúdo atual para o painel
+## Como o projeto funciona
 
-## Conteúdo editável
+- **Site público:** páginas e identidade visual em Astro/React.
+- **Painel de conteúdo:** textos, imagens, eventos, agenda e notícias no Sanity.
+- **Hospedagem:** Vercel, ligada ao GitHub.
+- **Atualização:** o servidor busca o conteúdo publicado antes de mostrar cada página, sem troca visível de textos.
+- **Segurança:** se o Sanity estiver temporariamente indisponível, o site usa a cópia de segurança incluída no código.
 
-O Sanity Studio é a fonte principal. Ele permite publicar textos, fotos, agenda, eventos e capítulos do diário sem abrir o VS Code. O Wix CMS permanece como compatibilidade temporária e o conteúdo presente no código continua sendo a cópia de segurança.
+## Comandos do site
 
-Siga o passo a passo em [GUIA-EDITOR-DE-CONTEUDO.md](./GUIA-EDITOR-DE-CONTEUDO.md).
+```bash
+npm install
+npm run dev
+npm run check
+npm run build
+npm run preview
+```
 
-## Compatibilidade com o Wix CMS
+`npm run preview` abre uma prévia local em modo de desenvolvimento. A versão publicada roda na infraestrutura da Vercel.
 
-O site usa Wix CMS com conteúdo de segurança no próprio código. Se uma coleção estiver vazia ou ainda não existir, o site continua funcionando com os textos e imagens originais.
+## Comandos do painel
 
-Siga o passo a passo em [GUIA-CMS-WIX.md](./GUIA-CMS-WIX.md). Os arquivos CSV prontos para importação estão na pasta `cms`.
+```bash
+npm run studio:dev
+npm run studio:build
+npm run studio:deploy
+```
+
+O conteúdo inicial já foi importado. Não execute `studio:seed` novamente sem necessidade, pois ele serve apenas para restaurar a base inicial.
+
+## Endereços
+
+- Painel de edição: <https://macacos-conteudo-585esgnn.sanity.studio/>
+- Projeto Sanity: `585esgnn`
+- Dataset: `production`
+
+## Guias
+
+- [Como editar textos, imagens e eventos](./GUIA-EDITOR-DE-CONTEUDO.md)
+- [Como publicar o site na Vercel](./GUIA-PUBLICAR-VERCEL.md)

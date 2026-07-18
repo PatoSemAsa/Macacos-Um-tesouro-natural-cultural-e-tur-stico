@@ -1,9 +1,10 @@
 import Link from "next/link";
 import { Innovation, SiteFooter, SiteHeader } from "../components";
 import { useSiteContent } from "../cms-client";
+import type { SiteContent } from "../site-data";
 
-export default function SobrePage() {
-  const { settings, about } = useSiteContent();
+export default function SobrePage({ content }: { content?: SiteContent }) {
+  const { settings, about } = useSiteContent(content);
   return <main>
     <div className="inner-header"><SiteHeader active="/sobre" settings={settings} /></div>
     <section className="about-hero"><div><span className="eyebrow light">{about.eyebrow}</span><h1>{about.title}</h1><p>{about.lead}</p></div><img src={settings.churchAboutImage} alt="Igreja de São Sebastião das Águas Claras" /></section>

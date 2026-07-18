@@ -1,9 +1,9 @@
 import { EventEditorial, Innovation, SiteFooter, SiteHeader } from "../components";
 import { useSiteContent } from "../cms-client";
-import { defaultSiteContent } from "../site-data";
+import { defaultSiteContent, type SiteContent } from "../site-data";
 
-export default function FotografiaPage() {
-  const { settings, experiences } = useSiteContent();
+export default function FotografiaPage({ content }: { content?: SiteContent }) {
+  const { settings, experiences } = useSiteContent(content);
   const item = experiences.find((experience) => experience.slug === "fotografia") ?? defaultSiteContent.experiences[1];
   return <main>
     <div className="overlay-header"><SiteHeader active="/fotografia" settings={settings} /></div>

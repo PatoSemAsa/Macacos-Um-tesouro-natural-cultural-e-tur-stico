@@ -1,5 +1,9 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import ReactPage from "../react/diario/page";
+import { loadSanityContent } from "../react/sanity-content";
+import { defaultSiteContent } from "../react/site-data";
+
+const content = (await loadSanityContent()) ?? defaultSiteContent;
 ---
-<BaseLayout title="Diário do projeto — Macacos"><ReactPage client:load /></BaseLayout>
+<BaseLayout title="Diário do projeto — Macacos"><ReactPage content={content} client:load /></BaseLayout>

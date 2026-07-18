@@ -1,107 +1,89 @@
-# Guia do painel de conteúdo
+# Como editar o site sem mexer em código
 
-O site foi dividido em duas partes:
+O painel de conteúdo está disponível em:
 
-- **Site público:** continua no Wix Headless, com o mesmo visual criado em Astro/React.
-- **Painel de conteúdo:** fica no Sanity Studio e serve para trocar textos, imagens, agenda, eventos e notícias.
+**https://macacos-conteudo-585esgnn.sanity.studio/**
 
-O conteúdo é buscado quando a pessoa abre o site. Por isso, uma publicação no painel aparece sem precisar alterar arquivos ou executar um novo build.
+Entre com a mesma conta usada na criação do projeto Sanity.
 
-## 1. Criar o projeto gratuito
+## O que você consegue editar
 
-1. Entre em https://www.sanity.io/manage.
-2. Faça login usando sua conta do Google ou GitHub.
-3. Clique em **Create project**.
-4. Use o nome **Macacos — Conteúdo do site**.
-5. Mantenha o dataset com o nome **production** e escolha a opção pública.
-6. Copie o **Project ID** exibido nas configurações do projeto.
+### Configurações do site
 
-O Project ID identifica o banco de conteúdo, mas não é uma senha.
+Use para alterar:
 
-## 2. Colocar o Project ID no projeto
+- chamada e texto principal da página inicial;
+- data da contagem regressiva;
+- texto de apresentação;
+- Instagram;
+- localização e mapa;
+- fotos da igreja;
+- texto do rodapé.
 
-Na pasta principal `site-macacos-wix-astro`, crie um arquivo chamado `.env.local` com:
+### Sobre o projeto
 
-```env
-PUBLIC_SANITY_PROJECT_ID=COLE_AQUI_O_PROJECT_ID
-PUBLIC_SANITY_DATASET=production
-PUBLIC_SANITY_API_VERSION=2026-07-15
-```
+Use para alterar os textos institucionais, a história do território e as informações da associação.
 
-Na pasta `studio`, crie outro arquivo chamado `.env.local` com:
+### Experiências e eventos
 
-```env
-SANITY_STUDIO_PROJECT_ID=COLE_AQUI_O_PROJECT_ID
-SANITY_STUDIO_DATASET=production
-```
+É onde ficam Caminhadas, Fotografia, Poesia e Festival da Canção. Em cada item você pode editar:
 
-Não envie esses arquivos ao GitHub. Eles já estão protegidos pelo `.gitignore`.
+- título e descrição;
+- datas e prazos;
+- foto editorial e cartaz;
+- formulário de inscrição;
+- regulamento e outros links;
+- programação, prêmios e informações completas.
 
-## 3. Instalar e entrar no painel
+### Agenda
 
-Abra o terminal do VS Code na pasta principal e execute, um comando de cada vez:
+Use para criar ou atualizar atividades por dia. Você pode trocar data, local, horários, foto e vínculo com o evento correspondente.
 
-```powershell
-npm.cmd install --legacy-peer-deps
-npm.cmd --prefix studio install
-cd studio
-npx.cmd sanity login
-npm.cmd run seed
-npm.cmd run dev
-```
+### Diário e notícias
 
-O navegador abrirá o painel local. Na primeira execução, `seed` copia todo o conteúdo já preparado para o novo editor.
+Use esta área para as atualizações frequentes do projeto. Cada publicação pode ter:
 
-## 4. Publicar o painel de edição
+- título, data e categoria;
+- foto de capa;
+- resumo e texto completo;
+- galeria de fotos;
+- vídeo;
+- estado de publicação.
 
-Ainda dentro da pasta `studio`, execute:
+## Como publicar uma alteração
 
-```powershell
-npm.cmd run deploy
-```
+1. Abra a seção desejada no menu esquerdo.
+2. Clique no item que quer editar.
+3. Altere o texto ou envie a nova imagem.
+4. Clique em **Publish / Publicar** no canto inferior direito.
+5. Abra o site e atualize a página.
 
-Escolha um endereço disponível, por exemplo `macacos-conteudo`. Depois disso, o painel poderá ser aberto de qualquer computador autorizado.
+Não é necessário executar build nem abrir o VS Code para mudanças de conteúdo. O site consulta o conteúdo publicado quando a página é aberta.
 
-## 5. Liberar o site para ler o conteúdo
+## Como criar uma notícia nova
 
-No gerenciamento do projeto Sanity:
+1. Abra **Diário e notícias**.
+2. Clique no botão **+** ou **Create**.
+3. Preencha pelo menos título, data, resumo e foto.
+4. Deixe **Mostrar no site** ativado.
+5. Clique em **Publish / Publicar**.
 
-1. Abra **API**.
-2. Entre em **CORS origins**.
-3. Adicione `http://localhost:4321` para os testes locais.
-4. Adicione o domínio do site publicado no Wix.
-5. Quando `curtamacacos.com.br` estiver ligado à nova versão, adicione também `https://www.curtamacacos.com.br`.
-6. Não marque a opção de credenciais; o site apenas lê conteúdo público.
+## Como trocar uma imagem
 
-## 6. Publicar uma notícia ou registro diário
+1. Abra o item que contém a imagem.
+2. Clique no campo da imagem.
+3. Escolha **Upload**.
+4. Selecione a imagem no computador.
+5. Aguarde o envio terminar.
+6. Adicione um texto alternativo simples, descrevendo a foto.
+7. Publique o item.
 
-1. Abra o painel.
-2. Clique em **Diário e notícias**.
-3. Clique no botão de criar novo item.
-4. Preencha título, data, resumo e texto.
-5. Envie a foto de capa e, se quiser, uma galeria ou link de vídeo.
-6. Mantenha **Mostrar no site** ativado.
-7. Clique em **Publish / Publicar**.
+Prefira fotos em JPG ou WebP, com pelo menos 1600 px de largura. Para cartazes e logos, PNG também é adequado.
 
-## 7. Alterar um evento
+## O que continua sendo feito no código
 
-1. Abra **Experiências e eventos**.
-2. Escolha Caminhadas, Fotografia, Poesia ou Canção.
-3. Use as abas **Identificação**, **Cartão e capa**, **Conteúdo completo** e **Inscrição e links**.
-4. Em **Cartão e capa**, você pode trocar separadamente a imagem editorial e o cartaz oficial.
-5. Em **Inscrição e links**, você pode atualizar formulário, regulamento, anexos e ingressos.
-6. Faça a alteração e publique.
+Mudanças de estrutura ou aparência — como criar uma nova página, mover blocos, mudar animações ou redesenhar o menu — são feitas no projeto do GitHub. Você pode solicitar essas alterações e depois a Vercel publica automaticamente a nova versão.
 
-## 8. Trocar as imagens antigas
+## Recuperação
 
-Abra o item desejado e envie a imagem original no campo de upload. O campo “URL alternativa” existe somente para manter as imagens atuais funcionando durante a migração e pode ser deixado como está.
-
-Os quatro cartazes recuperados do site anterior já estão incluídos e otimizados. Ao enviar uma nova versão no campo **Cartaz oficial**, ela substitui a atual sem alterar o restante da página.
-
-## Segurança e recuperação
-
-- A logo oficial “Macacos” permanece fixa no cabeçalho.
-- TurMa continua em **Realização** e Semente + MPMG continuam em **Apoio**.
-- “Curta Macacos” só aparece no endereço e no nome do Instagram.
-- Se o painel ficar temporariamente indisponível, o site exibe automaticamente a cópia de segurança incluída no código.
-- Mudanças de layout continuam sendo feitas no VS Code e podem ser solicitadas ao Codex.
+O site possui uma cópia local dos principais textos e imagens. Se o painel ficar indisponível por alguns instantes, o visitante ainda verá o site funcionando.

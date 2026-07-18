@@ -4,10 +4,10 @@ import Link from "next/link";
 import { useState } from "react";
 import { SiteFooter, SiteHeader } from "../components";
 import { useSiteContent } from "../cms-client";
-import { defaultSiteContent } from "../site-data";
+import { defaultSiteContent, type SiteContent } from "../site-data";
 
-export default function AgendaPage() {
-  const { settings, agenda: days } = useSiteContent();
+export default function AgendaPage({ content }: { content?: SiteContent }) {
+  const { settings, agenda: days } = useSiteContent(content);
   const [selected, setSelected] = useState("");
   const day = days.find((item) => item.id === selected) ?? days[0] ?? defaultSiteContent.agenda[0];
   const selectedId = day.id;

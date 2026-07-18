@@ -1,10 +1,10 @@
 import Link from "next/link";
 import { Countdown, ExperienceGrid, SiteFooter, SiteHeader } from "./components";
 import { useSiteContent } from "./cms-client";
-import { defaultSiteContent } from "./site-data";
+import { defaultSiteContent, type SiteContent } from "./site-data";
 
-export default function Home() {
-  const { settings, experiences, agenda, diary } = useSiteContent();
+export default function Home({ content }: { content?: SiteContent }) {
+  const { settings, experiences, agenda, diary } = useSiteContent(content);
   const walking = experiences.find((item) => item.slug === "caminhadas") ?? defaultSiteContent.experiences[0];
   const photography = experiences.find((item) => item.slug === "fotografia") ?? defaultSiteContent.experiences[1];
   const poetry = experiences.find((item) => item.slug === "poesia") ?? defaultSiteContent.experiences[2];

@@ -1,14 +1,12 @@
 import { fileURLToPath } from "node:url";
 import { defineConfig } from "astro/config";
 import react from "@astrojs/react";
-
-import wix from "@wix/astro";
-import cloudProviderFetchAdapter from "@wix/cloud-provider-fetch-adapter";
-const isBuild = process.env.NODE_ENV == "production";
+import vercel from "@astrojs/vercel";
 
 export default defineConfig({
-  integrations: [react(), wix()],
-  output: "static",
+  integrations: [react()],
+  output: "server",
+  adapter: vercel(),
   trailingSlash: "always",
 
   vite: {
@@ -19,9 +17,7 @@ export default defineConfig({
     },
   },
 
-  ...(isBuild && { adapter: cloudProviderFetchAdapter({}) }),
-
   image: {
-    domains: ["static.wixstatic.com"],
+    domains: ["cdn.sanity.io"],
   },
 });

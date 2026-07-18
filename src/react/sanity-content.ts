@@ -11,7 +11,7 @@ import {
 
 type RawDocument = Record<string, unknown>;
 
-const projectId = import.meta.env.PUBLIC_SANITY_PROJECT_ID?.trim();
+const projectId = import.meta.env.PUBLIC_SANITY_PROJECT_ID?.trim() || "585esgnn";
 const dataset = import.meta.env.PUBLIC_SANITY_DATASET?.trim() || "production";
 const apiVersion = import.meta.env.PUBLIC_SANITY_API_VERSION?.trim() || "2026-07-15";
 

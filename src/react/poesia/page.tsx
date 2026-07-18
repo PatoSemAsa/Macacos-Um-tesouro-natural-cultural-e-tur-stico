@@ -1,9 +1,9 @@
 import { EventEditorial, Innovation, SiteFooter, SiteHeader } from "../components";
 import { useSiteContent } from "../cms-client";
-import { defaultSiteContent } from "../site-data";
+import { defaultSiteContent, type SiteContent } from "../site-data";
 
-export default function PoesiaPage() {
-  const { settings, experiences } = useSiteContent();
+export default function PoesiaPage({ content }: { content?: SiteContent }) {
+  const { settings, experiences } = useSiteContent(content);
   const item = experiences.find((experience) => experience.slug === "poesia") ?? defaultSiteContent.experiences[2];
   return <main>
     <div className="overlay-header"><SiteHeader active="/poesia" settings={settings} /></div>

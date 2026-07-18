@@ -1,10 +1,10 @@
 import Link from "next/link";
 import { SiteFooter, SiteHeader } from "../components";
 import { useSiteContent } from "../cms-client";
-import { defaultSiteContent } from "../site-data";
+import { defaultSiteContent, type SiteContent } from "../site-data";
 
-export default function DiarioPage() {
-  const { settings, diary: chapters } = useSiteContent();
+export default function DiarioPage({ content }: { content?: SiteContent }) {
+  const { settings, diary: chapters } = useSiteContent(content);
   const firstChapter = chapters[0] ?? defaultSiteContent.diary[0];
   const secondChapter = chapters[1] ?? defaultSiteContent.diary[1];
   return <main>
