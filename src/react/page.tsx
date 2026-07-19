@@ -19,13 +19,13 @@ export default function Home({ content }: { content?: SiteContent }) {
           <h1>{settings.heroTitleStart}<br /><em>{settings.heroTitleHighlight}</em><br />{settings.heroTitleEnd}</h1>
           <p>{settings.heroDescription}</p>
           <div className="hero-actions">
-            <Link className="button acid" href="/eventos">Escolha sua experiência <span>↗</span></Link>
+            <Link className="button acid" href="/eventos">Conheça os eventos <span>↗</span></Link>
             <Link className="button glass" href="/agenda">Ver agenda completa</Link>
           </div>
           <Countdown targetDate={settings.countdownDate} />
         </div>
 
-        <div className="atlas-collage" aria-label="Experiências do projeto">
+        <div className="atlas-collage" aria-label="Eventos do projeto">
           <Link className="atlas-frame frame-church" href="/sobre">
             <img src={settings.churchHeroImage} alt="Igreja de São Sebastião das Águas Claras" />
             <span>O território</span>
@@ -53,13 +53,13 @@ export default function Home({ content }: { content?: SiteContent }) {
       <section className="manifesto-section">
         <span className="manifesto-index">{settings.introLabel}</span>
         <p>{settings.introText}</p>
-        <div className="manifesto-stats"><span><b>{String(experiences.length).padStart(2, "0")}</b> experiências</span><span><b>03</b> meses</span><span><b>01</b> território</span></div>
+        <div className="manifesto-stats"><span><b>{String(experiences.length).padStart(2, "0")}</b> eventos</span><span><b>03</b> meses</span><span><b>01</b> território</span></div>
       </section>
 
       <section className="section experience-showcase" id="experiencias">
         <div className="section-heading split">
           <div><span className="eyebrow">Seu passaporte 2026</span><h2>Escolha como<br />você quer viver.</h2></div>
-          <p>Salve seus favoritos no roteiro pessoal. Cada eixo agora tem uma imagem, uma cor e uma experiência própria.</p>
+          <p>Salve seus favoritos no roteiro pessoal. Cada evento tem uma imagem, uma cor e uma identidade própria.</p>
         </div>
         <ExperienceGrid experiences={experiences} />
       </section>

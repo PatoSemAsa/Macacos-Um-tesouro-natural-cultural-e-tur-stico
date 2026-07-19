@@ -204,7 +204,7 @@ export const experiences: Experience[] = [
     facts: ["60 vagas para maiores de 18 anos.", "20 horas de aulas teóricas e práticas.", "Apostila, camiseta, alimentação, guia, transporte e certificado incluídos.", "Uma fotografia final por participante."],
     featureCards: [
       { value: "01", label: "Formação", title: "20 horas de curso", text: "Aulas teóricas e práticas com Flávio Souza Cruz." },
-      { value: "02", label: "Experiência", title: "Saídas fotográficas", text: "Registros em diferentes pontos turísticos de Macacos." },
+      { value: "02", label: "Evento", title: "Saídas fotográficas", text: "Registros em diferentes pontos turísticos de Macacos." },
       { value: "03", label: "Concurso", title: "Exposição popular", text: "As 60 imagens seguem para exposição, votação e livro oficial." },
     ],
     schedule: [
@@ -378,7 +378,7 @@ export const defaultSiteContent: SiteContent = {
 
 export const navItems = [
   { label: "Início", href: "/" },
-  { label: "Experiências", href: "/eventos" },
+  { label: "Eventos", href: "/eventos" },
   { label: "Agenda", href: "/agenda" },
   { label: "Diário", href: "/diario" },
   { label: "O projeto", href: "/sobre" },

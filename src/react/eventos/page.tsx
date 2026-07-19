@@ -21,10 +21,10 @@ export default function EventosPage({ content }: { content?: SiteContent }) {
       <div className="inner-header"><SiteHeader active="/eventos" settings={settings} /></div>
       <section className="page-intro">
         <span className="eyebrow">Agenda 2026</span>
-        <div className="page-intro-grid"><h1>Experiências para<br />sentir Macacos.</h1><p>Filtre a programação, compare datas e acesse inscrições e regulamentos sem sair da agenda.</p></div>
+        <div className="page-intro-grid"><h1>Eventos para<br />sentir Macacos.</h1><p>Filtre a programação, compare datas e acesse inscrições e regulamentos sem sair da agenda.</p></div>
         <div className="filter-bar" role="group" aria-label="Filtrar eventos">
           {filters.map((item) => <button key={item.value} className={filter === item.value ? "selected" : ""} onClick={() => setFilter(item.value)}>{item.label}</button>)}
-          <span>{visible.length} experiências</span>
+          <span>{visible.length} eventos</span>
         </div>
       </section>
       <section className="section event-list-section">

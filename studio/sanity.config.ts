@@ -14,7 +14,7 @@ const structure = (S: StructureBuilder) => S.list().title("Conteúdo do site").i
   S.listItem().title("Configurações do site").child(S.document().schemaType("siteSettings").documentId("siteSettings")),
   S.listItem().title("Sobre o projeto").child(S.document().schemaType("aboutPage").documentId("aboutPage")),
   S.divider(),
-  S.documentTypeListItem("experience").title("Experiências e eventos"),
+  S.documentTypeListItem("experience").title("Eventos"),
   S.documentTypeListItem("agendaEntry").title("Agenda"),
   S.documentTypeListItem("diaryPost").title("Diário e notícias"),
 ]);

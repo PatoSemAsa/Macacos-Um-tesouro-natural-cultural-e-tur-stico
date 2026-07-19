@@ -104,7 +104,7 @@ export function ExperienceCard({ item }: { item: Experience }) {
         <div className="card-top"><span>{item.eyebrow}</span><PassportButton slug={item.slug} /></div>
         <h3>{item.title}</h3><p>{item.description}</p>
         <div className="card-meta"><span>{item.period}</span><span>{item.deadline}</span></div>
-        <Link className="card-link" href={item.href}>Explorar experiência <span>↗</span></Link>
+        <Link className="card-link" href={item.href}>Ver evento <span>↗</span></Link>
       </div>
     </article>
   );

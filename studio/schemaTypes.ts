@@ -113,7 +113,7 @@ const aboutPage = defineType({
 
 const experience = defineType({
   name: "experience",
-  title: "Experiência ou evento",
+  title: "Evento",
   type: "document",
   groups: [
     { name: "identity", title: "Identificação", default: true },
@@ -170,7 +170,7 @@ const agendaEntry = defineType({
     defineField({ name: "coverImage", title: "Imagem", type: "image", options: { hotspot: true } }),
     defineField({ name: "imageUrl", title: "URL alternativa da imagem", type: "string", description: "Use apenas durante a migração." }),
     defineField({ name: "activities", title: "Atividades e horários", type: "array", of: [defineArrayMember({ type: "agendaActivity" })], validation: (Rule) => Rule.min(1) }),
-    defineField({ name: "experience", title: "Experiência relacionada", type: "reference", to: [{ type: "experience" }] }),
+    defineField({ name: "experience", title: "Evento relacionado", type: "reference", to: [{ type: "experience" }] }),
     defineField({ name: "experienceLink", title: "Link alternativo", type: "string", description: "Exemplo: /caminhadas" }),
     defineField({ name: "active", title: "Mostrar no site", type: "boolean", initialValue: true }),
     defineField({ name: "order", title: "Ordem", type: "number", initialValue: 1 }),
