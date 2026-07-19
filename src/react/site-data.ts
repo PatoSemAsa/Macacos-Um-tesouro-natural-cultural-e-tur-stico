@@ -85,6 +85,19 @@ export type DiaryChapter = {
   videoUrl: string;
 };
 
+export type FeaturedVlog = {
+  active: boolean;
+  eyebrow: string;
+  title: string;
+  description: string;
+  image: string;
+  imageAlt: string;
+  instagramUrl: string;
+  label: string;
+  status: string;
+  highlights: string[];
+};
+
 export type SiteSettings = {
   seasonLabel: string;
   heroTitleStart: string;
@@ -122,6 +135,7 @@ export type SiteContent = {
   experiences: Experience[];
   agenda: AgendaDay[];
   diary: DiaryChapter[];
+  featuredVlog: FeaturedVlog;
 };
 
 export const experiences: Experience[] = [
@@ -345,6 +359,19 @@ export const siteSettings: SiteSettings = {
   mapUrl: "https://www.google.com/maps/search/?api=1&query=S%C3%A3o+Sebasti%C3%A3o+das+%C3%81guas+Claras+Nova+Lima+MG",
 };
 
+export const featuredVlog: FeaturedVlog = {
+  active: true,
+  eyebrow: "Formato pensado para vídeo",
+  title: "Um vlog dentro\ndo próprio site.",
+  description: "O vídeo pode ficar em destaque, acompanhado por galeria, roteiro do dia, depoimentos e links para compartilhar.",
+  image: siteSettings.churchHeroImage,
+  imageAlt: "Igreja de São Sebastião das Águas Claras",
+  instagramUrl: siteSettings.instagramUrl,
+  label: "VLOG 01",
+  status: "Em breve",
+  highlights: ["Vídeo principal", "Galeria de fotos", "Resumo do dia", "Depoimentos"],
+};
+
 export const aboutContent: AboutContent = {
   eyebrow: "São Sebastião das Águas Claras",
   title: "Um território que inspira encontros.",
@@ -374,6 +401,7 @@ export const defaultSiteContent: SiteContent = {
   experiences,
   agenda: agendaDays,
   diary: diaryChapters,
+  featuredVlog,
 };
 
 export const navItems = [

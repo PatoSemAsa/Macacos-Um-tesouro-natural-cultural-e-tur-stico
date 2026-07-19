@@ -202,4 +202,38 @@ const diaryPost = defineType({
   preview: { select: { title: "title", subtitle: "dateLabel", media: "coverImage" } },
 });
 
-export const schemaTypes = [contentCard, scheduleEntry, prize, contentLink, agendaActivity, siteSettings, aboutPage, experience, agendaEntry, diaryPost];
+const featuredVlog = defineType({
+  name: "featuredVlog",
+  title: "Vlog em destaque",
+  type: "document",
+  initialValue: {
+    active: true,
+    eyebrow: "Formato pensado para vídeo",
+    title: "Um vlog dentro\ndo próprio site.",
+    description: "O vídeo pode ficar em destaque, acompanhado por galeria, roteiro do dia, depoimentos e links para compartilhar.",
+    imageAlt: "Igreja de São Sebastião das Águas Claras",
+    label: "VLOG 01",
+    status: "Em breve",
+    highlights: ["Vídeo principal", "Galeria de fotos", "Resumo do dia", "Depoimentos"],
+  },
+  groups: [
+    { name: "content", title: "Textos", default: true },
+    { name: "media", title: "Imagem e Instagram" },
+  ],
+  fields: [
+    defineField({ name: "active", title: "Mostrar esta seção no site", type: "boolean", initialValue: true, group: "content" }),
+    defineField({ name: "eyebrow", title: "Etiqueta acima do título", type: "string", group: "content" }),
+    defineField({ name: "title", title: "Título", type: "text", rows: 2, validation: (Rule) => Rule.required(), group: "content", description: "Você pode apertar Enter para quebrar o título em duas linhas." }),
+    defineField({ name: "description", title: "Texto de apresentação", type: "text", rows: 4, group: "content" }),
+    defineField({ name: "label", title: "Identificação sobre a imagem", type: "string", description: "Exemplo: VLOG 01", group: "content" }),
+    defineField({ name: "status", title: "Status", type: "string", options: { list: ["Em breve", "Publicado", "Atualizado"] }, initialValue: "Em breve", group: "content" }),
+    defineField({ name: "highlights", title: "Itens abaixo do texto", type: "array", of: [defineArrayMember({ type: "string" })], validation: (Rule) => Rule.max(4), group: "content" }),
+    defineField({ name: "coverImage", title: "Imagem clicável do vlog", type: "image", options: { hotspot: true }, group: "media" }),
+    defineField({ name: "imageAlt", title: "Descrição da imagem", type: "string", description: "Explique brevemente o que aparece na imagem para acessibilidade.", group: "media" }),
+    defineField({ name: "instagramUrl", title: "Link do Instagram", type: "url", validation: (Rule) => Rule.uri({ scheme: ["http", "https"] }), description: "Ao clicar na imagem ou no botão de play, este endereço será aberto. Pode ser um post, Reel ou perfil. Se ficar vazio, será usado o Instagram das configurações gerais.", group: "media" }),
+    defineField({ name: "imageUrl", title: "URL alternativa da imagem", type: "string", hidden: true }),
+  ],
+  preview: { select: { title: "title", subtitle: "status", media: "coverImage" } },
+});
+
+export const schemaTypes = [contentCard, scheduleEntry, prize, contentLink, agendaActivity, siteSettings, aboutPage, experience, agendaEntry, diaryPost, featuredVlog];

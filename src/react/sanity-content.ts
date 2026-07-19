@@ -5,6 +5,7 @@ import {
   type AboutContent,
   type DiaryChapter,
   type Experience,
+  type FeaturedVlog,
   type SiteContent,
   type SiteSettings,
 } from "./site-data";
@@ -45,6 +46,10 @@ const contentQuery = `{
     number, "slug": slug.current, tag, title, dateLabel, publishedAt, description,
     bodyParagraphs, status, videoUrl, "image": coalesce(coverImage.asset->url, imageUrl),
     "gallery": gallery[].asset->url
+  },
+  "featuredVlog": *[_type == "featuredVlog" && _id == "featuredVlog"][0]{
+    active, eyebrow, title, description, imageAlt, instagramUrl, label, status,
+    highlights, "image": coalesce(coverImage.asset->url, imageUrl)
   }
 }`;
 
@@ -60,6 +65,10 @@ function stringList(value: unknown, fallback: string[] = []) {
 
 function objectList(value: unknown) {
   return Array.isArray(value) ? value.filter((item): item is RawDocument => !!item && typeof item === "object") : [];
+}
+
+function booleanValue(value: unknown, fallback: boolean) {
+  return typeof value === "boolean" ? value : fallback;
 }
 
 function mapSettings(raw: unknown): SiteSettings {
@@ -190,17 +199,40 @@ function mapDiary(raw: unknown): DiaryChapter[] {
   return result.length ? result : defaultSiteContent.diary;
 }
 
+function mapFeaturedVlog(raw: unknown, settings: SiteSettings): FeaturedVlog {
+  const row = raw && typeof raw === "object" ? raw as RawDocument : {};
+  const fallback = {
+    ...defaultSiteContent.featuredVlog,
+    image: settings.churchHeroImage,
+    instagramUrl: settings.instagramUrl,
+  };
+  return {
+    active: booleanValue(row.active, fallback.active),
+    eyebrow: stringValue(row.eyebrow, fallback.eyebrow),
+    title: stringValue(row.title, fallback.title),
+    description: stringValue(row.description, fallback.description),
+    image: stringValue(row.image, fallback.image),
+    imageAlt: stringValue(row.imageAlt, fallback.imageAlt),
+    instagramUrl: stringValue(row.instagramUrl, settings.instagramUrl),
+    label: stringValue(row.label, fallback.label),
+    status: stringValue(row.status, fallback.status),
+    highlights: stringList(row.highlights, fallback.highlights),
+  };
+}
+
 export async function loadSanityContent(): Promise<SiteContent | null> {
   if (!projectId) return null;
   try {
     const client = createClient({ projectId, dataset, apiVersion, useCdn: true, perspective: "published" });
     const result = await client.fetch<Record<string, unknown>>(contentQuery);
+    const settings = mapSettings(result.settings);
     return {
-      settings: mapSettings(result.settings),
+      settings,
       about: mapAbout(result.about),
       experiences: mapExperiences(result.experiences),
       agenda: mapAgenda(result.agenda),
       diary: mapDiary(result.diary),
+      featuredVlog: mapFeaturedVlog(result.featuredVlog, settings),
     };
   } catch (error) {
     console.warn("Não foi possível carregar o conteúdo do Sanity; usando a cópia de segurança.", error);

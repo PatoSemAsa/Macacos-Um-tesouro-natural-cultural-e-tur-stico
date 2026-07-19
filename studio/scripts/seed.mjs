@@ -4,6 +4,7 @@ import {
   agendaDays,
   diaryChapters,
   experiences,
+  featuredVlog,
   siteSettings,
 } from "../../src/react/site-data.ts";
 
@@ -96,7 +97,17 @@ const diaryDocuments = diaryChapters.map((item, index) => {
   };
 });
 
-const documents = [settingsDocument, aboutDocument, ...experienceDocuments, ...agendaDocuments, ...diaryDocuments];
+const featuredVlogDocument = (() => {
+  const { image, ...rest } = featuredVlog;
+  return {
+    _id: "featuredVlog",
+    _type: "featuredVlog",
+    ...rest,
+    imageUrl: image,
+  };
+})();
+
+const documents = [settingsDocument, aboutDocument, featuredVlogDocument, ...experienceDocuments, ...agendaDocuments, ...diaryDocuments];
 let transaction = client.transaction();
 for (const document of documents) transaction = transaction.createOrReplace(document);
 

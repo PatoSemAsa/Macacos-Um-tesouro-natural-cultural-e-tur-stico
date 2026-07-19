@@ -377,11 +377,15 @@ main { overflow:hidden; }
 .chapter-copy p { max-width:560px; color:#587067; line-height:1.65; }
 .soon-label { display:inline-flex; margin-top:13px; padding:8px 11px; border:1px solid rgba(6,25,21,.18); border-radius:999px; font-size:9px; text-transform:uppercase; letter-spacing:.12em; font-weight:900; }
 .vlog-module { padding:110px 5vw; display:grid; grid-template-columns:1.2fr .8fr; gap:75px; align-items:center; background:#cfe8f2; }
-.vlog-screen { position:relative; height:520px; overflow:hidden; border:14px solid var(--night); border-radius:25px; background:var(--night); box-shadow:18px 18px 0 var(--acid); }
-.vlog-screen::after { content:""; position:absolute; inset:0; background:rgba(3,20,15,.25); }
-.vlog-screen img { width:100%; height:100%; object-fit:cover; }
-.play-button { position:absolute; z-index:2; left:50%; top:50%; width:78px; height:78px; transform:translate(-50%,-50%); display:grid; place-items:center; border-radius:50%; color:var(--night); background:var(--acid); font-size:22px; }
+.vlog-screen { position:relative; display:block; height:520px; overflow:hidden; border:14px solid var(--night); border-radius:25px; color:inherit; background:var(--night); box-shadow:18px 18px 0 var(--acid); text-decoration:none; cursor:pointer; }
+.vlog-screen::after { content:""; position:absolute; inset:0; background:rgba(3,20,15,.25); pointer-events:none; }
+.vlog-screen img { width:100%; height:100%; object-fit:cover; transition:transform .35s ease; }
+.vlog-screen:hover img { transform:scale(1.025); }
+.vlog-screen:focus-visible { outline:4px solid white; outline-offset:5px; }
+.play-button { position:absolute; z-index:2; left:50%; top:50%; width:78px; height:78px; transform:translate(-50%,-50%); display:grid; place-items:center; border-radius:50%; color:var(--night); background:var(--acid); font-size:22px; transition:transform .25s ease; }
+.vlog-screen:hover .play-button { transform:translate(-50%,-50%) scale(1.08); }
 .vlog-screen small { position:absolute; z-index:2; left:18px; bottom:16px; color:white; letter-spacing:.12em; font-weight:900; }
+.vlog-module h2 { white-space:pre-line; }
 .vlog-module p { color:#506a61; line-height:1.7; }
 .vlog-module ul { padding:0; display:grid; grid-template-columns:1fr 1fr; gap:10px; list-style:none; }
 .vlog-module li { padding:12px; border:1px solid rgba(6,25,21,.16); border-radius:10px; font-size:12px; font-weight:800; }
