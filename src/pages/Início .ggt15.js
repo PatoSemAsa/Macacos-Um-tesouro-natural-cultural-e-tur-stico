@@ -290,8 +290,8 @@ function espacador(px) {
   return '<p style="font-size:' + alt + 'px;line-height:1">&nbsp;</p>';
 }
 
-// o que cada marcador vira na tela, já formatado
-const DESENHO = {
+// cada pedaço do slide, já formatado
+const PARTE = {
   dia: function (v) {
     return linha(v.status, {
       tam: T.selo, cor: v.statusCor, forte: true,
@@ -329,6 +329,27 @@ const DESENHO = {
       tam: T.linha, cor: v.ja ? COR.apagado : COR.ambar, forte: true,
       altura: 1.5, acima: 10
     });
+  }
+};
+
+// A ORDEM DAS LINHAS DO SLIDE
+//
+// Tudo isso vai para UM ÚNICO elemento de texto — o que tem o marcador
+// {{s1dia}}, que é o de cima. Os outros seis são recolhidos pelo código.
+//
+// Por que: cada caixa de texto do editor tem altura fixa. Quando o texto
+// real é maior que a caixa (e no celular, com 240px de largura, quase
+// sempre é), as linhas transbordam e sobem por cima do cartão verde —
+// foi exatamente o que apareceu no celular do Otávio. Com um bloco só,
+// não existe caixa para transbordar: o texto cresce para baixo e os
+// botões descem junto.
+const ORDEM = ["dia", "titulo", "palco", "sub", "local", "ingresso", "contagem"];
+
+const DESENHO = {
+  dia: function (v) {
+    return ORDEM.map(function (papel) {
+      try { return PARTE[papel](v); } catch (err) { return ""; }
+    }).join("");
   }
 };
 
@@ -384,8 +405,10 @@ function preenche(modelo, v) {
 function pintarBotao(el, papel, apagado) {
   try {
     if (papel === "mapa") {
-      el.style.backgroundColor = "rgba(0,0,0,0)";
-      el.style.borderColor = "rgba(255,255,255,0.55)";
+      // fundo opaco de propósito: com fundo transparente o Wix deixava
+      // aparecer uma segunda cópia do texto por baixo, no celular
+      el.style.backgroundColor = "#1D4A38";
+      el.style.borderColor = "rgba(255,255,255,0.45)";
       el.style.borderWidth = "2px";
       el.style.borderRadius = "40px";
       el.style.color = COR.branco;
@@ -421,10 +444,11 @@ function aplicar() {
       return;
     }
 
-    // texto: quando existe um desenho pronto para o papel, usa o HTML
-    // formatado; se não, cai no preenchimento simples dos marcadores
-    const desenho = (r.slide >= 0 && v) ? DESENHO[r.papel] : null;
-    if (desenho) {
+    // dentro do carrossel: o elemento do papel "dia" recebe o slide
+    // inteiro; os outros somem, para não sobrar caixa vazia
+    if (r.slide >= 0) {
+      const desenho = v ? DESENHO[r.papel] : null;
+      if (!desenho) { el.collapse(); return; }
       let html = "";
       try { html = desenho(v); } catch (err) { html = ""; }
       if (!html) { el.collapse(); return; }
