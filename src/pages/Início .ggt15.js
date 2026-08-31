@@ -5,15 +5,27 @@
 //  COMO FUNCIONA
 //  O carrossel é uma Apresentação de slides nativa do Wix (#slideshow1):
 //  ela passa sozinha e usa as animações do próprio Wix. Este código só
-//  preenche os textos e botões de cada slide, e refaz a conta a cada
-//  30 segundos.
+//  preenche os textos e botões de cada slide — e também o tamanho, a
+//  cor e o negrito de cada linha — refazendo a conta a cada 30 segundos.
 //
-//  Os textos dos slides têm marcadores entre chaves — {{s1dia}},
-//  {{s1titulo}}, {{s1contagem}}... Como todos os slides são cópias do
-//  primeiro, todos têm os mesmos marcadores; o código ignora o "s1" e
-//  usa a POSIÇÃO do slide: o slide 1 recebe a próxima atividade, o
-//  slide 2 a seguinte, e assim por diante. O que já aconteceu vai para
-//  o fim da fila, com o selo "Já aconteceu" e sem botão de ingresso.
+//  Os textos dos slides têm marcadores entre chaves. Como todos os
+//  slides são cópias do primeiro, todos têm os mesmos marcadores; o
+//  código ignora o "s1" e usa a POSIÇÃO do slide: o slide 1 recebe a
+//  próxima atividade, o slide 2 a seguinte, e assim por diante. O que
+//  já aconteceu vai para o fim da fila, com o selo "Já aconteceu" e
+//  sem botão de ingresso.
+//
+//  O QUE CADA MARCADOR VIRA NA TELA
+//    {{s1dia}}       linha de cima: o selo ao vivo (FALTAM 12 DIAS,
+//                    É HOJE!, ACONTECENDO AGORA...) + a data GRANDE
+//    {{s1titulo}}    o nome da atividade
+//    {{s1palco}}     quem se apresenta
+//    {{s1sub}}       a explicação curta
+//    {{s1local}}     📍 onde é
+//    {{s1ingresso}}  🎫 quanto custa / como entrar
+//    {{s1contagem}}  🗓️ o dia da semana, a data por extenso e a hora
+//    {{s1botao}}     botão de inscrição / ingresso
+//    {{s1mapa}}      botão "Como chegar"
 //
 //  PARA MUDAR UMA DATA, UM ARTISTA, UM PREÇO OU UM LINK
 //  Mexa só na lista EVENTOS abaixo. Nada mais.
@@ -21,6 +33,8 @@
 //  Datas e valores conferidos nos regulamentos assinados, nos
 //  formulários de inscrição e nas páginas do Sympla (agosto/2026).
 // =================================================================
+
+import wixWindow from 'wix-window';
 
 const RECANTO =
   "Recanto do Suíço — R. Seis de Outubro, 1500 · Macacos, Nova Lima/MG";
@@ -39,7 +53,7 @@ const EVENTOS = [
     palco: "Show do Trio Folk News",
     sub: "As 3 fotografias mais votadas premiadas no palco · entrega dos certificados",
     ingresso: "ENTRADA GRATUITA · retire o ingresso antes, as vagas são limitadas",
-    botao: ["Pegar ingresso grátis no Sympla",
+    botao: ["Pegar ingresso grátis",
       "https://www.sympla.com.br/evento/encerramento-do-concurso-de-fotografia-projeto-macacos-um-tesouro-natural-cultural-e-turistico/3473746"]
   },
   {
@@ -49,7 +63,7 @@ const EVENTOS = [
     palco: "Beatriz Myrrha e Duo Dama-Triz",
     sub: "Os 3 melhores poemas de cada categoria, infantojuvenil e adulto",
     ingresso: "ENTRADA GRATUITA · retire o ingresso antes, as vagas são limitadas",
-    botao: ["Pegar ingresso grátis no Sympla",
+    botao: ["Pegar ingresso grátis",
       "https://www.sympla.com.br/evento/encerramento-do-concurso-de-poesia-projeto-macacos-um-tesouro-natural-cultural-e-turistico/3474005"]
   },
   {
@@ -59,7 +73,7 @@ const EVENTOS = [
     palco: "As 20 canções semifinalistas ao vivo",
     sub: "Dessas, 10 seguem para a grande final no dia seguinte",
     ingresso: "INGRESSO R$ 20 · a renda vira cestas básicas para a comunidade",
-    botao: ["Comprar ingresso no Sympla",
+    botao: ["Comprar ingresso",
       "https://www.sympla.com.br/evento/semifinal-do-festival-da-cancao-projeto-macacos-um-tesouro-natural-cultural-e-turistico/3474131"]
   },
   {
@@ -69,19 +83,21 @@ const EVENTOS = [
     palco: "As 10 canções finalistas ao vivo",
     sub: "R$ 10 mil em prêmios: R$ 5.000, R$ 3.000 e R$ 2.000",
     ingresso: "INGRESSO R$ 20 · a renda vira cestas básicas para a comunidade",
-    botao: ["Comprar ingresso no Sympla",
+    botao: ["Comprar ingresso",
       "https://www.sympla.com.br/evento/final-do-festival-da-cancao-projeto-macacos-um-tesouro-natural-cultural-e-turistico/3474485"]
   },
   {
     tipo: "temporada",
     f: "2026-10-25T18:00",              // último dia da temporada
     dia: "25", mes: "OUT", semana: "DATAS ATÉ", hora: "8h",
+    dataGrande: "ATÉ 25 DE OUTUBRO",
+    dataLinha: "Várias datas · a saída é sempre às 8h da manhã",
     titulo: "Caminhadas guiadas por Macacos",
     palco: "Marumbé, Mirante do Eustáquio e Cachoeira dos Anjos",
     sub: "Datas previstas até 25 de outubro · você escolhe a sua no formulário",
     ingresso: "GRATUITAS · 20 vagas por data, a partir de 10 anos · inscreva-se até 3 dias antes",
     estadoFixo: "INSCRIÇÕES ABERTAS",
-    botao: ["Escolher data e se inscrever", "https://forms.gle/faHXaMziKTemPzna6"]
+    botao: ["Escolher data e me inscrever", "https://forms.gle/faHXaMziKTemPzna6"]
   }
 ];
 
@@ -95,11 +111,25 @@ const VOTACAO = {
   botao: ["Votar agora", "https://tally.so/r/44lkKo"]
 };
 
+// ---- cores (as mesmas do resto do site) --------------------------
+const COR = {
+  branco: "#FFFFFF",
+  creme: "#F3EFE3",
+  fraco: "rgba(255,255,255,0.78)",
+  apagado: "rgba(255,255,255,0.55)",
+  ambar: "#F2B33D",      // falta pouco / contagem
+  agora: "#FFD34D",      // acontecendo agora
+  verde: "#7FE0A8",      // inscrições abertas
+  mata: "#13372A"        // texto dentro do botão claro
+};
+
 // ==================================================================
 //  daqui para baixo não precisa mexer
 // ==================================================================
 
 const MES = ["JAN","FEV","MAR","ABR","MAI","JUN","JUL","AGO","SET","OUT","NOV","DEZ"];
+const MESG = ["JANEIRO","FEVEREIRO","MARÇO","ABRIL","MAIO","JUNHO","JULHO",
+  "AGOSTO","SETEMBRO","OUTUBRO","NOVEMBRO","DEZEMBRO"];
 const MESL = ["janeiro","fevereiro","março","abril","maio","junho",
   "julho","agosto","setembro","outubro","novembro","dezembro"];
 const SEM = ["DOMINGO","SEGUNDA","TERÇA","QUARTA","QUINTA","SEXTA","SÁBADO"];
@@ -138,16 +168,16 @@ function dias(a, b) { return numeroDoDia(b) - numeroDoDia(a); }
 function estado(agora, e) {
   const fim = dt(e.f);
   if (e.tipo === "temporada") {
-    if (agora > fim) return { txt: "Temporada encerrada", ja: true };
-    return { txt: e.estadoFixo };
+    if (agora > fim) return { txt: "Temporada encerrada", ja: true, cor: COR.apagado };
+    return { txt: e.estadoFixo, cor: COR.verde };
   }
   const ini = dt(e.d);
-  if (agora >= ini && agora <= fim) return { txt: "ACONTECENDO AGORA" };
-  if (agora > fim) return { txt: "Já aconteceu", ja: true };
+  if (agora >= ini && agora <= fim) return { txt: "ACONTECENDO AGORA", cor: COR.agora };
+  if (agora > fim) return { txt: "Já aconteceu", ja: true, cor: COR.apagado };
   const n = dias(agora, ini);
-  if (n === 0) return { txt: "É HOJE!" };
-  if (n === 1) return { txt: "É AMANHÃ" };
-  return { txt: "FALTAM " + n + " DIAS" };
+  if (n === 0) return { txt: "É HOJE!", cor: COR.agora };
+  if (n === 1) return { txt: "É AMANHÃ", cor: COR.agora };
+  return { txt: "FALTAM " + n + " DIAS", cor: COR.ambar };
 }
 
 // o que está por vir primeiro; o que já passou vai para o fim
@@ -167,9 +197,14 @@ function valoresDoEvento(e) {
   const v = {};
   if (e.tipo === "temporada") {
     v.dia = e.dia; v.mes = e.mes; v.semana = e.semana; v.hora = e.hora;
+    v.dataGrande = e.dataGrande;
+    v.dataLinha = e.dataLinha;
   } else {
     const b = brasilia(e.quando);
     v.dia = b.dia; v.mes = MES[b.mes]; v.semana = SEM[b.sem]; v.hora = b.hora + "h";
+    v.dataGrande = (+b.dia) + " DE " + MESG[b.mes];
+    v.dataLinha = SEML[b.sem] + ", " + (+b.dia) + " de " + MESL[b.mes] +
+      " · a partir das " + b.hora + "h";
   }
   v.titulo = e.titulo;
   v.palco = e.palco;
@@ -177,6 +212,9 @@ function valoresDoEvento(e) {
   v.local = RECANTO;
   v.ingresso = e.st.ja ? "Já aconteceu — obrigado a quem participou!" : e.ingresso;
   v.contagem = e.st.txt;
+  v.status = e.st.txt;
+  v.statusCor = e.st.cor;
+  v.ja = !!e.st.ja;
   v.botao = e.st.ja ? null : e.botao;
   v.mapa = ["Como chegar", MAPA];
   return v;
@@ -204,8 +242,71 @@ function valoresGerais(agora) {
   return v;
 }
 
+// ---- aparência: tamanhos de letra no computador e no celular -----
+const CELULAR = (function () {
+  try { return wixWindow.formFactor === "Mobile"; } catch (e) { return false; }
+})();
+
+const T = CELULAR
+  ? { selo: 13, data: 28, titulo: 20, palco: 16, sub: 14, local: 14, ingresso: 13, linha: 14 }
+  : { selo: 18, data: 46, titulo: 30, palco: 20, sub: 17, local: 18, ingresso: 17, linha: 19 };
+
+function esc(s) {
+  return String(s === undefined || s === null ? "" : s)
+    .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+}
+
+// uma linha de texto formatada, do jeito que o Wix entende
+function linha(txt, o) {
+  o = o || {};
+  const p = [];
+  p.push("text-align:center");
+  p.push("font-size:" + o.tam + "px");
+  p.push("line-height:" + (o.altura || 1.25));
+  if (o.espaco) p.push("letter-spacing:" + o.espaco + "px");
+  const s = [];
+  s.push("color:" + (o.cor || COR.branco));
+  const dentro = o.forte ? "<strong>" + esc(txt) + "</strong>" : esc(txt);
+  return '<p style="' + p.join(";") + '"><span style="' + s.join(";") + '">' +
+    dentro + "</span></p>";
+}
+
+// o que cada marcador vira na tela, já formatado
+const DESENHO = {
+  dia: function (v) {
+    return linha(v.status, {
+      tam: T.selo, cor: v.statusCor, forte: true,
+      espaco: CELULAR ? 1.5 : 2.5, altura: 1.4
+    }) + linha(v.dataGrande, {
+      tam: T.data, cor: COR.branco, forte: true,
+      espaco: CELULAR ? 0 : 1, altura: 1.08
+    });
+  },
+  titulo: function (v) {
+    return linha(v.titulo, { tam: T.titulo, cor: COR.branco, forte: true, altura: 1.2 });
+  },
+  palco: function (v) {
+    return linha("🎤  " + v.palco, { tam: T.palco, cor: COR.creme, forte: true });
+  },
+  sub: function (v) {
+    return linha(v.sub, { tam: T.sub, cor: COR.fraco, altura: 1.35 });
+  },
+  local: function (v) {
+    return linha("📍  " + v.local, { tam: T.local, cor: COR.branco, forte: true });
+  },
+  ingresso: function (v) {
+    return linha("🎫  " + v.ingresso, { tam: T.ingresso, cor: COR.fraco });
+  },
+  contagem: function (v) {
+    return linha("🗓️  " + v.dataLinha, {
+      tam: T.linha, cor: v.ja ? COR.apagado : COR.ambar, forte: true
+    });
+  }
+};
+
 // ---- ligação com os elementos do editor --------------------------
-// registro: { id, modelo, slide }  (slide = -1 quando está fora do carrossel)
+// registro: { id, modelo, slide, botao, papel }
+// (slide = -1 quando o elemento está fora do carrossel)
 const registrados = [];
 
 function temMarcador(t) { return /\{\{[a-z0-9]+\}\}/i.test(t || ""); }
@@ -215,13 +316,25 @@ function chaveDe(marcador) {
   return marcador.replace(/[{}]/g, "").replace(/^s\d+/i, "").toLowerCase();
 }
 
+// o papel do elemento é o PRIMEIRO marcador que ele contém
+function papelDe(modelo) {
+  const m = (modelo || "").match(/\{\{[a-z0-9]+\}\}/i);
+  return m ? chaveDe(m[0]) : "";
+}
+
 function registrar(el, indiceDoSlide) {
   const tipo = el.type;
   try {
     if (tipo === "$w.Text" && temMarcador(el.text)) {
-      registrados.push({ id: el.id, modelo: el.text, slide: indiceDoSlide, botao: false });
+      registrados.push({
+        id: el.id, modelo: el.text, slide: indiceDoSlide,
+        botao: false, papel: papelDe(el.text)
+      });
     } else if (tipo === "$w.Button" && temMarcador(el.label)) {
-      registrados.push({ id: el.id, modelo: el.label, slide: indiceDoSlide, botao: true });
+      registrados.push({
+        id: el.id, modelo: el.label, slide: indiceDoSlide,
+        botao: true, papel: papelDe(el.label)
+      });
     }
   } catch (err) { /* elemento sem texto/label */ }
 
@@ -239,6 +352,25 @@ function preenche(modelo, v) {
   }).trim();
 }
 
+// os dois botões do slide: o de inscrição chama atenção, o do mapa é discreto
+function pintarBotao(el, papel, apagado) {
+  try {
+    if (papel === "mapa") {
+      el.style.backgroundColor = "rgba(0,0,0,0)";
+      el.style.borderColor = "rgba(255,255,255,0.55)";
+      el.style.borderWidth = "2px";
+      el.style.borderRadius = "40px";
+      el.style.color = COR.branco;
+    } else {
+      el.style.backgroundColor = apagado ? "rgba(255,255,255,0.18)" : COR.ambar;
+      el.style.borderColor = "rgba(0,0,0,0)";
+      el.style.borderWidth = "0px";
+      el.style.borderRadius = "40px";
+      el.style.color = apagado ? COR.branco : COR.mata;
+    }
+  } catch (err) { /* botão sem estilo editável */ }
+}
+
 function aplicar() {
   const agora = new Date();
   const lista = ordena(agora);
@@ -251,19 +383,33 @@ function aplicar() {
     const v = r.slide >= 0 ? porSlide[r.slide] : geral;
 
     if (r.botao) {
-      const chave = chaveDe((r.modelo.match(/\{\{[a-z0-9]+\}\}/i) || [""])[0]);
-      const val = v ? v[chave] : null;
+      const val = v ? v[r.papel] : null;
       if (!val) { el.collapse(); return; }
       el.label = val[0];
       el.link = val[1];
       el.target = "_blank";
+      pintarBotao(el, r.papel, !!(v && v.ja));
       el.expand();
-    } else {
-      const texto = preenche(r.modelo, v);
-      if (!texto) { el.collapse(); return; }
-      el.text = texto;
-      el.expand();
+      return;
     }
+
+    // texto: quando existe um desenho pronto para o papel, usa o HTML
+    // formatado; se não, cai no preenchimento simples dos marcadores
+    const desenho = (r.slide >= 0 && v) ? DESENHO[r.papel] : null;
+    if (desenho) {
+      let html = "";
+      try { html = desenho(v); } catch (err) { html = ""; }
+      if (!html) { el.collapse(); return; }
+      try { el.html = html; }
+      catch (err) { el.text = preenche(r.modelo, v); }
+      el.expand();
+      return;
+    }
+
+    const texto = preenche(r.modelo, v);
+    if (!texto) { el.collapse(); return; }
+    el.text = texto;
+    el.expand();
   });
 }
 
@@ -282,14 +428,20 @@ $w.onReady(function () {
   $w("Text").forEach(el => {
     try {
       if (!dentro[el.id] && temMarcador(el.text)) {
-        registrados.push({ id: el.id, modelo: el.text, slide: -1, botao: false });
+        registrados.push({
+          id: el.id, modelo: el.text, slide: -1,
+          botao: false, papel: papelDe(el.text)
+        });
       }
     } catch (err) { /* ignora */ }
   });
   $w("Button").forEach(el => {
     try {
       if (!dentro[el.id] && temMarcador(el.label)) {
-        registrados.push({ id: el.id, modelo: el.label, slide: -1, botao: true });
+        registrados.push({
+          id: el.id, modelo: el.label, slide: -1,
+          botao: true, papel: papelDe(el.label)
+        });
       }
     } catch (err) { /* ignora */ }
   });
