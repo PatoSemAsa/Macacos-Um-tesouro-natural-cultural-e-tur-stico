@@ -53,7 +53,7 @@ const EVENTOS = [
     palco: "Show do Trio Folk News",
     sub: "As 3 fotografias mais votadas premiadas no palco · entrega dos certificados",
     ingresso: "ENTRADA GRATUITA · retire o ingresso antes, as vagas são limitadas",
-    botao: ["Pegar ingresso grátis",
+    botao: ["Pegar ingresso",
       "https://www.sympla.com.br/evento/encerramento-do-concurso-de-fotografia-projeto-macacos-um-tesouro-natural-cultural-e-turistico/3473746"]
   },
   {
@@ -63,7 +63,7 @@ const EVENTOS = [
     palco: "Beatriz Myrrha e Duo Dama-Triz",
     sub: "Os 3 melhores poemas de cada categoria, infantojuvenil e adulto",
     ingresso: "ENTRADA GRATUITA · retire o ingresso antes, as vagas são limitadas",
-    botao: ["Pegar ingresso grátis",
+    botao: ["Pegar ingresso",
       "https://www.sympla.com.br/evento/encerramento-do-concurso-de-poesia-projeto-macacos-um-tesouro-natural-cultural-e-turistico/3474005"]
   },
   {
@@ -97,7 +97,7 @@ const EVENTOS = [
     sub: "Datas previstas até 25 de outubro · você escolhe a sua no formulário",
     ingresso: "GRATUITAS · 20 vagas por data, a partir de 10 anos · inscreva-se até 3 dias antes",
     estadoFixo: "INSCRIÇÕES ABERTAS",
-    botao: ["Escolher data e me inscrever", "https://forms.gle/faHXaMziKTemPzna6"]
+    botao: ["Escolher data", "https://forms.gle/faHXaMziKTemPzna6"]
   }
 ];
 
