@@ -267,8 +267,17 @@ function linha(txt, o) {
   const s = [];
   s.push("color:" + (o.cor || COR.branco));
   const dentro = o.forte ? "<strong>" + esc(txt) + "</strong>" : esc(txt);
-  return '<p style="' + p.join(";") + '"><span style="' + s.join(";") + '">' +
+  return espacador(o.acima) +
+    '<p style="' + p.join(";") + '"><span style="' + s.join(";") + '">' +
     dentro + "</span></p>";
+}
+
+// uma linha em branco de altura controlada — é a forma que o Wix
+// aceita sem reclamar para abrir respiro entre as linhas do slide
+function espacador(px) {
+  if (!px) return "";
+  const alt = Math.max(2, Math.round(px * (CELULAR ? 0.55 : 1)));
+  return '<p style="font-size:' + alt + 'px;line-height:1">&nbsp;</p>';
 }
 
 // o que cada marcador vira na tela, já formatado
@@ -279,27 +288,34 @@ const DESENHO = {
       espaco: CELULAR ? 1.5 : 2.5, altura: 1.4
     }) + linha(v.dataGrande, {
       tam: T.data, cor: COR.branco, forte: true,
-      espaco: CELULAR ? 0 : 1, altura: 1.08
+      espaco: CELULAR ? 0 : 1, altura: 1.1, acima: 2
     });
   },
   titulo: function (v) {
-    return linha(v.titulo, { tam: T.titulo, cor: COR.branco, forte: true, altura: 1.2 });
+    return linha(v.titulo, {
+      tam: T.titulo, cor: COR.branco, forte: true, altura: 1.25, acima: 8
+    });
   },
   palco: function (v) {
-    return linha("🎤  " + v.palco, { tam: T.palco, cor: COR.creme, forte: true });
+    return linha("🎤  " + v.palco, {
+      tam: T.palco, cor: COR.creme, forte: true, altura: 1.4, acima: 12
+    });
   },
   sub: function (v) {
-    return linha(v.sub, { tam: T.sub, cor: COR.fraco, altura: 1.35 });
+    return linha(v.sub, { tam: T.sub, cor: COR.fraco, altura: 1.45, acima: 4 });
   },
   local: function (v) {
-    return linha("📍  " + v.local, { tam: T.local, cor: COR.branco, forte: true });
+    return linha("📍  " + v.local, {
+      tam: T.local, cor: COR.branco, forte: true, altura: 1.4, acima: 10
+    });
   },
   ingresso: function (v) {
-    return linha("🎫  " + v.ingresso, { tam: T.ingresso, cor: COR.fraco });
+    return linha("🎫  " + v.ingresso, { tam: T.ingresso, cor: COR.fraco, altura: 1.4 });
   },
   contagem: function (v) {
     return linha("🗓️  " + v.dataLinha, {
-      tam: T.linha, cor: v.ja ? COR.apagado : COR.ambar, forte: true
+      tam: T.linha, cor: v.ja ? COR.apagado : COR.ambar, forte: true,
+      altura: 1.5, acima: 10
     });
   }
 };
