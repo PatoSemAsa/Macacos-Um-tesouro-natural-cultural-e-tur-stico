@@ -39,6 +39,9 @@ import wixWindow from 'wix-window';
 const RECANTO =
   "Recanto do Suíço — R. Seis de Outubro, 1500 · Macacos, Nova Lima/MG";
 
+// no celular a tela é estreita: mesma informação, versão curta
+const RECANTO_CURTO = "Recanto do Suíço · Macacos, Nova Lima";
+
 const MAPA =
   "https://www.google.com/maps/search/?api=1&query=Recanto+do+Sui%C3%A7o+R.+Seis+de+Outubro+1500+Sao+Sebastiao+das+Aguas+Claras+Nova+Lima+MG";
 
@@ -251,6 +254,13 @@ const T = CELULAR
   ? { selo: 13, data: 28, titulo: 20, palco: 16, sub: 14, local: 14, ingresso: 13, linha: 14 }
   : { selo: 18, data: 46, titulo: 30, palco: 20, sub: 17, local: 18, ingresso: 17, linha: 19 };
 
+// no celular fica só a primeira parte da frase (antes do " · ")
+function curto(txt) {
+  if (!CELULAR || !txt) return txt;
+  const i = txt.indexOf(" · ");
+  return i > 0 ? txt.slice(0, i) : txt;
+}
+
 function esc(s) {
   return String(s === undefined || s === null ? "" : s)
     .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
@@ -305,12 +315,14 @@ const DESENHO = {
     return linha(v.sub, { tam: T.sub, cor: COR.fraco, altura: 1.45, acima: 4 });
   },
   local: function (v) {
-    return linha("📍  " + v.local, {
+    return linha("📍  " + (CELULAR ? RECANTO_CURTO : v.local), {
       tam: T.local, cor: COR.branco, forte: true, altura: 1.4, acima: 10
     });
   },
   ingresso: function (v) {
-    return linha("🎫  " + v.ingresso, { tam: T.ingresso, cor: COR.fraco, altura: 1.4 });
+    return linha("🎫  " + curto(v.ingresso), {
+      tam: T.ingresso, cor: COR.fraco, altura: 1.4
+    });
   },
   contagem: function (v) {
     return linha("🗓️  " + v.dataLinha, {
