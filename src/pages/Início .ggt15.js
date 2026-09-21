@@ -75,8 +75,8 @@ const EVENTOS = [
     titulo: "Semifinal do Festival da Canção",
     palco: "As 20 canções semifinalistas ao vivo",
     sub: "Dessas, 10 seguem para a grande final no dia seguinte",
-    ingresso: "INGRESSO R$ 20 · a renda vira cestas básicas para a comunidade",
-    botao: ["Comprar ingresso",
+    ingresso: "INGRESSO GRATUITO · retire pelo Sympla",
+    botao: ["Pegar ingresso",
       "https://www.sympla.com.br/evento/semifinal-do-festival-da-cancao-projeto-macacos-um-tesouro-natural-cultural-e-turistico/3474131"]
   },
   {
@@ -85,8 +85,8 @@ const EVENTOS = [
     titulo: "Final do Festival da Canção",
     palco: "As 10 canções finalistas ao vivo",
     sub: "R$ 10 mil em prêmios: R$ 5.000, R$ 3.000 e R$ 2.000",
-    ingresso: "INGRESSO R$ 20 · a renda vira cestas básicas para a comunidade",
-    botao: ["Comprar ingresso",
+    ingresso: "INGRESSO GRATUITO · retire pelo Sympla",
+    botao: ["Pegar ingresso",
       "https://www.sympla.com.br/evento/final-do-festival-da-cancao-projeto-macacos-um-tesouro-natural-cultural-e-turistico/3474485"]
   },
   {
