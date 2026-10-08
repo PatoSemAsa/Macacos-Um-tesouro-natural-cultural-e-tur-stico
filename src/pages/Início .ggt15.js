@@ -91,13 +91,13 @@ const EVENTOS = [
   },
   {
     tipo: "temporada",
-    f: "2026-10-25T18:00",              // último dia da temporada
-    dia: "25", mes: "OUT", semana: "DATAS ATÉ", hora: "8h",
-    dataGrande: "ATÉ 25 DE OUTUBRO",
+    f: "2026-10-24T18:00",              // último dia da temporada
+    dia: "24", mes: "OUT", semana: "DATAS ATÉ", hora: "8h",
+    dataGrande: "ATÉ 24 DE OUTUBRO",
     dataLinha: "Várias datas · a saída é sempre às 8h da manhã",
     titulo: "Caminhadas guiadas por Macacos",
     palco: "Marumbé, Mirante do Eustáquio e Cachoeira dos Anjos",
-    sub: "Datas previstas até 25 de outubro · você escolhe a sua no formulário",
+    sub: "Datas previstas até 24 de outubro · você escolhe a sua no formulário",
     ingresso: "GRATUITAS · 20 vagas por data, a partir de 10 anos · inscreva-se até 3 dias antes",
     estadoFixo: "INSCRIÇÕES ABERTAS",
     botao: ["Escolher data", "https://forms.gle/faHXaMziKTemPzna6"]
